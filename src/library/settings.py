@@ -28,13 +28,23 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 LOCAL_APPS = [
-    'books',
-
-]
+    'book',
+    'core',
+    'user',
+  ]
 
 THIRD_PARTY = [
     'jet',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'phonenumber_field',
+    'phonenumbers',
+    
+
 ]
 
 DJANGO_APPS = [
@@ -44,18 +54,23 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 INSTALLED_APPS = LOCAL_APPS + DJANGO_APPS + THIRD_PARTY
 
+SITE_ID = 1
+
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+       'django.middleware.security.SecurityMiddleware',
+       'django.contrib.sessions.middleware.SessionMiddleware',
+       'django.middleware.common.CommonMiddleware',
+       'django.middleware.csrf.CsrfViewMiddleware',
+       'django.contrib.auth.middleware.AuthenticationMiddleware',
+       'django.contrib.messages.middleware.MessageMiddleware',
+       'django.middleware.clickjacking.XFrameOptionsMiddleware',
+       'core.middleware.AuthMiddleware',
+
 ]
 
 ROOT_URLCONF = 'library.urls'
@@ -85,14 +100,13 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'user_284',
-        'PASSWORD': 'pass284',
+        'NAME': 'lmsdb',
+        'USER': 'lmsuser',
+        'PASSWORD': 'lms123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -127,5 +141,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+
+AUTH_USER_MODEL = 'user.User'
 
 STATIC_URL = '/static/'
