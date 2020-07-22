@@ -31,6 +31,7 @@ LOCAL_APPS = [
     'book',
     'core',
     'user',
+    'borrow',
   ]
 
 THIRD_PARTY = [

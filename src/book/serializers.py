@@ -14,6 +14,12 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CopyOfBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CopyOfBook
+        fields = '__all__'
+
+
 
 
 

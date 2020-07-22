@@ -8,8 +8,8 @@ from rest_framework.response import Response
 
 import json
 
-from book.models import Author, Book
-from book.serializers import AuthorSerializer, BookSerializer
+from book.models import Author, Book, CopyOfBook
+from book.serializers import AuthorSerializer, BookSerializer, CopyOfBookSerializer
 from user.permissions import UserPermission
 from user.models import User
 
@@ -84,6 +84,36 @@ class BookListCreateAPIView(ListCreateAPIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         except ObjectDoesNotExist as e:
             return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND) 
+
+
+
+
+class CopyOfBookListCreateAPIView(ListCreateAPIView):
+    serializer_class = CopyOfBookSerializer
+    queryset = CopyOfBook.objects.filter()
+
+    def get_permission(self):
+        if self.request.method == 'POST':
+            return (UserPermission('can_add_copy_of_book'), )
+        elif self.request.method == 'GET':
+            return (permissions.AllowAny(), )
+        return MethodNotAllowed(method=self.request.method)
+
+    def create(self, request, *args, **kwargs):
+        payload = json.loads(request.body)
+
+        try:
+            book = Book.objects.get(isbn=payload['book'])
+
+            copy_book = CopyOfBook.objects.create(
+                copy_of_book_code=payload['copy_of_book_code'],
+                book=book,
+                quantity=payload['quantity'],
+            )  
+            serializer = self.get_serializer(copy_book)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        except ObjectDoesNotExist as e:
+            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)              
 
 
         

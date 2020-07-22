@@ -8,7 +8,8 @@ USER_GROUPS = {
     ],
 
    'user': [
-       '*'
+       'can_change_password',
+       'can_borrow_books',
    ],
    
    
